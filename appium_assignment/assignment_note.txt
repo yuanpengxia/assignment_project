@@ -1,0 +1,13 @@
+使用 Appium Inspector 录制雪球的搜索功能，比如搜索 alibaba, jd, xiaomi
+
+注意：
+
+使用录制功能完成上面的功能，
+
+进行简单的重构，使用 pytest 测试框架。
+
+可以加入参数化，实现多条搜索功能的测试用例。
+
+合理使用 setup_class, setup ，加快执行速度
+
+添加数据验证，assert
