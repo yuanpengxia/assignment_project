@@ -8,6 +8,6 @@
 
 可以加入参数化，实现多条搜索功能的测试用例。
 
-合理使用 setup_class, setup ，加快执行速度
+合理使用 setup_class, setup ，加快执行速度(setup_class优先级高于setup)
 
 添加数据验证，assert
