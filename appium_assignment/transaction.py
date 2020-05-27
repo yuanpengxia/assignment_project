@@ -23,34 +23,36 @@ class TestTransaction():
             "skipDeviceInitialization": True
         }
         self.driver = webdriver.Remote("http://localhost:4723/wd/hub", desire_cap)
-        # self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
 
     def teardown_class(self):
         sleep(2)
         self.driver.quit()
         pass
 
-    def test_search(self):
+    # def test_search(self):
+    #     print("这是一个搜索案例")
+    #     sleep(3)
+    #     self.driver.find_element(MobileBy.XPATH,
+    #                              f"//*[@resource-id='com.bkt.exchange:id/tv_indicator'and @text='交易']").click()
+    #     self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.ImageView").click()
+
+    @pytest.mark.parametrize('cointype,result',[
+        ('BKK', 'BKK/USDT'),
+        ('BNB', 'BNB/USDT'),
+        ('ETH', 'ETH/USDT')
+    ])
+    def test_bkk(self, cointype, result):
         print("这是一个搜索案例")
-        sleep(3)
         self.driver.find_element(MobileBy.XPATH,
                                  f"//*[@resource-id='com.bkt.exchange:id/tv_indicator'and @text='交易']").click()
         self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.ImageView").click()
-
-    @pytest.mark.parametrize("cointype",['BKK','BNB','ETH'])
-    def test_bkk(self,cointype):
         self.driver.find_element(MobileBy.ID, "com.bkt.exchange:id/coin_edit").send_keys(cointype)
-        sleep(3)
-    # @pytest.mark.parametrize("transtype",['BKK/USDT','BNB/USDT','ETH/SUDT'])
-    # def test_response(self,transtype):
+        sleep(5)
         self.driver.find_element(MobileBy.XPATH,
-                                       f"//*[@resource-id='com.bkt.exchange:id/pair] and @text='{cointype}").click()
-        sleep(2)
-        # 返回到上一页面
-        self.driver.back()
-        # self.driver.back()
-    #
-    # def test_add_favorites(self):
-    #     pass
+                                 f"//*[@resource-id='com.bkt.exchange:id/pair and @text='{result}']").click()
+
+
+
 if __name__ == '__main__':
     pytest.main()
