@@ -12,13 +12,14 @@ class TestTransaction():
             "deviceName": "7XBNW19910007839",
             "appPackage": "com.bkt.exchange",
             "appActivity": ".activity.StartPageActivity",
+            "autoGrantPermissions" : True,
             # 支持中文输入
             "unicodeKeyBoard": "true",
             "resetKeyBoard": "true",
             # 绕过弹窗
             "noReset": True,
             # 不需要重启，直接按照上次停留的页面继续操作（提升运行速度）
-            "dontStopAppOnReset": True,
+            # "dontStopAppOnReset": True,
             # 跳过安装，权限等设置等操作（提升运行速度）
             "skipDeviceInitialization": True
         }
@@ -30,29 +31,27 @@ class TestTransaction():
         self.driver.quit()
         pass
 
-    # def test_search(self):
-    #     print("这是一个搜索案例")
-    #     sleep(3)
-    #     self.driver.find_element(MobileBy.XPATH,
-    #                              f"//*[@resource-id='com.bkt.exchange:id/tv_indicator'and @text='交易']").click()
-    #     self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.ImageView").click()
-
-    @pytest.mark.parametrize('cointype,result',[
-        ('BKK', 'BKK/USDT'),
-        ('BNB', 'BNB/USDT'),
-        ('ETH', 'ETH/USDT')
-    ])
-    def test_bkk(self, cointype, result):
+    def test_search(self):
         print("这是一个搜索案例")
+        sleep(3)
         self.driver.find_element(MobileBy.XPATH,
                                  f"//*[@resource-id='com.bkt.exchange:id/tv_indicator'and @text='交易']").click()
         self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.ImageView").click()
+
+    @pytest.mark.parametrize("cointype,result",[
+        ('BKK',"BKK/USDT"),
+        ('BNB',"BNB/USDT"),
+        ('ETH','ETH/AT')
+    ])
+    def test_bkk(self,cointype,result):
         self.driver.find_element(MobileBy.ID, "com.bkt.exchange:id/coin_edit").send_keys(cointype)
-        sleep(5)
-        self.driver.find_element(MobileBy.XPATH,
-                                 f"//*[@resource-id='com.bkt.exchange:id/pair and @text='{result}']").click()
+        self.driver.find_element(MobileBy.XPATH, f"//*[@resource-id='com.bkt.exchange:id/pair' and @text='{result}']").click()
+        coin_price = float(self.driver.find_element_by_id("com.bkt.exchange:id/price").text)
+        #断言币种价格
+        pytest.assume(coin_price > 1)
+        self.driver.back()
 
-
-
+    # def test_add_favorites(self):
+    #     pass
 if __name__ == '__main__':
     pytest.main()
