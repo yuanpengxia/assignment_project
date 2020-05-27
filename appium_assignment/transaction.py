@@ -40,9 +40,11 @@ class TestTransaction():
     @pytest.mark.parametrize("cointype",['BKK','BNB','ETH'])
     def test_bkk(self,cointype):
         self.driver.find_element(MobileBy.ID, "com.bkt.exchange:id/coin_edit").send_keys(cointype)
-        sleep(5)
-        print(self.driver.find_element(MobileBy.XPATH,
-                                       f"//*[@resource-id='com.bkt.exchange:id/pair' and contains(@text,'{cointype}')]"))
+        sleep(3)
+    # @pytest.mark.parametrize("transtype",['BKK/USDT','BNB/USDT','ETH/SUDT'])
+    # def test_response(self,transtype):
+        self.driver.find_element(MobileBy.XPATH,
+                                       f"//*[@resource-id='com.bkt.exchange:id/pair] and @text='{cointype}").click()
         sleep(2)
         # 返回到上一页面
         self.driver.back()
